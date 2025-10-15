@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://uw80inopcjkt"
+path="res://.godot/imported/m_ D4_3.wav-bd5549f6bc06e6be63d9e815151dad0a.sample"
+
+[deps]
+
+source_file="res://assets/samples/guitar/m_ D4_3.wav"
+dest_files=["res://.godot/imported/m_ D4_3.wav-bd5549f6bc06e6be63d9e815151dad0a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=1
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
