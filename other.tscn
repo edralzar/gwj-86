@@ -12,6 +12,6 @@ radius = 155.70805
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_esrft")
 
-[node name="Sptrite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(31, 51)
 texture = ExtResource("1_4clav")

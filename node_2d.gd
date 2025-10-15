@@ -2,7 +2,8 @@ extends Node2D
 
 # Set r.bpm and r.audio_stream_player in inspector
 @onready var r: RhythmNotifier = $RhythmNotifier
-@onready var l: Label = $Label
+@onready var guide: Label = $GuidanceLabel
+@onready var judge: Label = $JudgeLabel
 
 # The beats method signature is:
 #

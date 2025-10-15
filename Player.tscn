@@ -10,6 +10,6 @@ radius = 167.07483
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kpjcp")
 
-[node name="Player" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(33, 65)
 texture = ExtResource("1_xhfnw")

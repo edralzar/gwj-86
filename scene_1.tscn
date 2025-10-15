@@ -1,36 +1,61 @@
-[gd_scene load_steps=7 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=11 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
-[ext_resource type="AudioStream" uid="uid://cp417gxm3mh0w" path="res://Air on the G string.mp3" id="3_kl852"]
+[ext_resource type="AudioStream" uid="uid://dx4y4o0d0y0ss" path="res://assets/bassline.wav" id="3_t0rxu"]
 [ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="4_knagl"]
 [ext_resource type="Script" uid="uid://cj6hclpsngu82" path="res://player.gd" id="5_kl852"]
 [ext_resource type="PackedScene" uid="uid://ce3rng3nvdp5i" path="res://other.tscn" id="6_4nmru"]
+[ext_resource type="Script" uid="uid://rq6s8cpuio4s" path="res://addons/SimpleSampler/sampler.gd" id="7_05u5g"]
+[ext_resource type="Script" uid="uid://dtpmtwvvk0ac7" path="res://addons/SimpleSampler/sample_resource.gd" id="8_mjd5i"]
+[ext_resource type="Resource" uid="uid://d085rl7odvhas" path="res://assets/samples/synth/B4.tres" id="9_0qqw6"]
+[ext_resource type="Resource" uid="uid://4fky4fiaq5cv" path="res://assets/samples/synth/E4.tres" id="10_8tpa3"]
 
 [node name="Scene1" type="Node2D"]
 script = ExtResource("1_1abo5")
 
 [node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("2_knagl")
-bpm = 130.0
-beat_length = 0.46153846153846156
+bpm = 140.0
+beat_length = 0.42857142857142855
 audio_stream_player = NodePath("AudioStreamPlayer")
 metadata/_custom_type_script = "uid://dos3qhffr4v0a"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
-stream = ExtResource("3_kl852")
+stream = ExtResource("3_t0rxu")
+max_polyphony = 2
 
-[node name="Label" type="Label" parent="."]
-offset_left = 123.0
-offset_top = 66.0
-offset_right = 852.0
-offset_bottom = 462.0
-size_flags_horizontal = 4
-text = "test"
+[node name="JudgeLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 171.0
+offset_top = 122.0
+offset_right = 382.0
+offset_bottom = 174.0
+grow_horizontal = 2
+size_flags_horizontal = 6
+text = "GREAT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GuidanceLabel" type="Label" parent="."]
+offset_left = 319.0
+offset_top = 16.0
+offset_right = 710.0
+offset_bottom = 98.0
+text = "Wait..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Other" parent="." instance=ExtResource("6_4nmru")]
+position = Vector2(739, 360)
 
 [node name="Player" parent="." instance=ExtResource("4_knagl")]
 position = Vector2(284, 356)
 script = ExtResource("5_kl852")
 
-[node name="Other" parent="Player" instance=ExtResource("6_4nmru")]
-position = Vector2(455, 4)
+[node name="Sampler" type="AudioStreamPlayer" parent="."]
+script = ExtResource("7_05u5g")
+samples = Array[ExtResource("8_mjd5i")]([ExtResource("9_0qqw6"), ExtResource("10_8tpa3")])
+metadata/_custom_type_script = "uid://rq6s8cpuio4s"
