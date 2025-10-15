@@ -14,3 +14,11 @@ config/name="GWJ86"
 run/main_scene="uid://cth76k06xt8wj"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+NoteValue="*res://addons/SimpleSampler/note_value.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SimpleSampler/plugin.cfg")
