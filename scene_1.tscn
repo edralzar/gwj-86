@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://cth76k06xt8wj"]
+
+[ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
+[ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
+[ext_resource type="AudioStream" uid="uid://cp417gxm3mh0w" path="res://Air on the G string.mp3" id="3_kl852"]
+[ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="4_knagl"]
+[ext_resource type="Script" uid="uid://cj6hclpsngu82" path="res://player.gd" id="5_kl852"]
+[ext_resource type="PackedScene" uid="uid://ce3rng3nvdp5i" path="res://other.tscn" id="6_4nmru"]
+
+[node name="Scene1" type="Node2D"]
+script = ExtResource("1_1abo5")
+
+[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+script = ExtResource("2_knagl")
+bpm = 130.0
+beat_length = 0.46153846153846156
+audio_stream_player = NodePath("AudioStreamPlayer")
+metadata/_custom_type_script = "uid://dos3qhffr4v0a"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
+stream = ExtResource("3_kl852")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 123.0
+offset_top = 66.0
+offset_right = 852.0
+offset_bottom = 462.0
+size_flags_horizontal = 4
+text = "test"
+
+[node name="Player" parent="." instance=ExtResource("4_knagl")]
+position = Vector2(284, 356)
+script = ExtResource("5_kl852")
+
+[node name="Other" parent="Player" instance=ExtResource("6_4nmru")]
+position = Vector2(455, 4)
