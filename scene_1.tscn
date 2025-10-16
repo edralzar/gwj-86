@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=14 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
@@ -11,8 +11,18 @@
 [ext_resource type="Resource" uid="uid://d085rl7odvhas" path="res://assets/samples/synth/B4.tres" id="9_0qqw6"]
 [ext_resource type="Resource" uid="uid://4fky4fiaq5cv" path="res://assets/samples/synth/E4.tres" id="10_8tpa3"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_2fno3"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_jl8ns"]
+font_size = 28
+
+[sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
+font_size = 32
+
 [node name="Scene1" type="Node2D"]
 script = ExtResource("1_1abo5")
+max_attempts = 1
 
 [node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("2_knagl")
@@ -29,24 +39,38 @@ max_polyphony = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 171.0
-offset_top = 122.0
-offset_right = 382.0
-offset_bottom = 174.0
+offset_left = 38.0
+offset_top = 170.0
+offset_right = 249.0
+offset_bottom = 216.0
 grow_horizontal = 2
 size_flags_horizontal = 6
 text = "GREAT"
+label_settings = SubResource("LabelSettings_2fno3")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="GuideLabel" type="Label" parent="."]
+offset_left = 87.0
+offset_top = 71.0
+offset_right = 478.0
+offset_bottom = 106.0
+text = "Wait..."
+label_settings = SubResource("LabelSettings_jl8ns")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GuidanceLabel" type="Label" parent="."]
-offset_left = 319.0
-offset_top = 16.0
-offset_right = 710.0
-offset_bottom = 98.0
-text = "Wait..."
+[node name="ProgressLabel" type="Label" parent="."]
+offset_left = 92.0
+offset_top = -1.0
+offset_right = 483.0
+offset_bottom = 81.0
+text = "ATTEMPT x / y"
+label_settings = SubResource("LabelSettings_t0rxu")
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true
 
 [node name="Other" parent="." instance=ExtResource("6_4nmru")]
 position = Vector2(739, 360)
