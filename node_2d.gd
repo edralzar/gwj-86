@@ -1,11 +1,10 @@
 extends Node2D
 
-# Set r.bpm and r.audio_stream_player in inspector
 @onready var r: RhythmNotifier = $RhythmNotifier
 @onready var guide: Label = $GuideLabel
 @onready var progress: Label = $ProgressLabel
 @onready var judge: Label = $JudgeLabel
-@onready var synth: Sampler = $Sampler
+@onready var synth: SamplerInstrument2D = $Sampler2D
 
 @export var notes : Array[String] = ["C", "E", "G", "B"]
 @export var responses : Array[String] = [ "D", "D", "D", "E"]
@@ -24,9 +23,11 @@ func _ready() -> void:
 		playerTurn = count >= 4
 		progress.text = "ATTEMPT %d / %d" % [attempt+1, max_attempts]
 		if (not playerTurn):
+			$ListeningListener2D.make_current()
 			judge.text = ""
 			guide.text = "Listen..." if (attempt == 0) else "Listen again..."
 		else:
+			$PlayingListener2D.make_current()
 			guide.text = "GO !"
 		
 		if (!playerTurn && count < notes.size()):
