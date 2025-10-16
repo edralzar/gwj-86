@@ -10,44 +10,29 @@
 [ext_resource type="Resource" uid="uid://d085rl7odvhas" path="res://assets/samples/synth/B4.tres" id="9_0qqw6"]
 [ext_resource type="Script" uid="uid://bcwt5giabpceq" path="res://addons/SimpleSampler/sampler_instrument_2D.gd" id="11_2fno3"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_2fno3"]
-font_size = 24
-
 [sub_resource type="LabelSettings" id="LabelSettings_jl8ns"]
 font_size = 28
 
 [sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
 font_size = 32
 
+[sub_resource type="LabelSettings" id="LabelSettings_2fno3"]
+font_size = 24
+
 [node name="Scene1" type="Node2D"]
 script = ExtResource("1_1abo5")
+max_attempts = 10
 
-[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+[node name="RhythmNotifier" type="Node" parent="."]
 script = ExtResource("2_knagl")
 bpm = 140.0
 beat_length = 0.42857142857142855
-audio_stream_player = NodePath("AudioStreamPlayer")
+running = true
 metadata/_custom_type_script = "uid://dos3qhffr4v0a"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
 stream = ExtResource("3_t0rxu")
 volume_db = -8.901
-
-[node name="JudgeLabel" type="Label" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 35.0
-offset_top = 136.0
-offset_right = 246.0
-offset_bottom = 182.0
-grow_horizontal = 2
-size_flags_horizontal = 6
-text = "GREAT"
-label_settings = SubResource("LabelSettings_2fno3")
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
 
 [node name="GuideLabel" type="Label" parent="."]
 offset_left = 87.0
@@ -66,6 +51,22 @@ offset_right = 483.0
 offset_bottom = 81.0
 text = "ATTEMPT x / y"
 label_settings = SubResource("LabelSettings_t0rxu")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="JudgeLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 35.0
+offset_top = 136.0
+offset_right = 246.0
+offset_bottom = 182.0
+grow_horizontal = 2
+size_flags_horizontal = 6
+text = "GREAT"
+label_settings = SubResource("LabelSettings_2fno3")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
