@@ -21,6 +21,7 @@ var playerBeat: int = -1
 var otherBeat: int = -1
 var stop := false
 var beatsPlayed: Dictionary = {}
+var score := 0
 
 func _ready() -> void:
 	var beatMs := r.beat_length
@@ -37,8 +38,9 @@ func _ready() -> void:
 		playerTurn = beat >= notes.size()
 		playerBeat = beat - notes.size() if playerTurn else -1
 		otherBeat = beat if not playerTurn else -1
-		if (beat == 0):
+		if (beat == 0 && score < notes.size()):
 			attempt += 1
+			score = 0
 			for n in playerMarkers:
 				n.newAttempt()
 		if stop:
@@ -60,7 +62,7 @@ func _ready() -> void:
 			oTween = get_tree().create_tween().set_loops(notes.size() - 1)
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9, 0.9), beatMs * 0.75)
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
-		if (beat == 0 and attempt == max_attempts):
+		if (beat == 0 and (attempt == max_attempts or score == notes.size())):
 			_stop()
 			return
 		
@@ -87,7 +89,7 @@ func _stop():
 	$AudioStreamPlayer.stop()
 	await get_tree().create_timer(beatMs / 2).timeout
 	judge.text = ""
-	progress.text = "=GAME OVER="
+	progress.text = "Congrats!" if score == notes.size() else "=GAME OVER="
 	for n in playerMarkers:
 		n.newAttempt()
 
@@ -123,7 +125,9 @@ func _judge(beat: int):
 		marker.markJudged(0)
 	elif played == responses[beat - notes.size()]:
 		judge.text = "GREAT %s" % debugMsg
-		marker.markJudged(3)
+		marker.markJudged(3, played)
+		score += 1
+		if (score == notes.size()): stop = true
 	else:
 		judge.text = "WRONG %s" % debugMsg
-		marker.markJudged(1)
+		marker.markJudged(1, played)

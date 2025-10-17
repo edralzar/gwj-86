@@ -14,28 +14,32 @@ func _ready() -> void:
 	settings = LabelSettings.new()
 	settings.font_color = Color.WHITE
 	settings.font_size = base_font_size
-	$Label.text = ""
-	$Label.label_settings = settings
+	$JudgeLabel.text = ""
+	$JudgeLabel.label_settings = settings
+	$NoteLabel.text = ""
 
 func newAttempt():
 	_reset()
 
-func markJudged(score: int):
+
+func markJudged(score: int, note: String = ""):
 	score = score % 4
+	$NoteLabel.text = note
 	if (score == 0):
-		$Label.text = "Miss"
+		$JudgeLabel.text = "Miss"
+		$NoteLabel.text = ""
 		settings.font_color = Color.RED
 		$Polygon2D.color = Color.RED
 	elif (score == 1):
-		$Label.text = "WRONG"
+		$JudgeLabel.text = "WRONG"
 		settings.font_color = Color.RED
 		$Polygon2D.color = Color.RED
 	elif (score == 2):
-		$Label.text = "OK"
+		$JudgeLabel.text = "OK"
 		settings.font_color = Color.BLUE
 		$Polygon2D.color = Color.BLUE
 	else:
-		$Label.text = "GREAT"
+		$JudgeLabel.text = "GREAT"
 		settings.font_color = Color.GREEN
 		$Polygon2D.color = Color.GREEN
 	tween = get_tree().create_tween()
@@ -45,8 +49,9 @@ func markJudged(score: int):
 	
 func _reset():
 	$Polygon2D.color = Color.WHITE
-	$Label.text = ""
+	$JudgeLabel.text = ""
+	$NoteLabel.text = ""
 	settings.font_color = Color.WHITE
 	settings.font_size = base_font_size
-	$Label.visible = true
+	$JudgeLabel.visible = true
 	if (tween): tween.stop()
