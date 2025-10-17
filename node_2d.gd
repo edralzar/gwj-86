@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var r: RhythmNotifier = $RhythmNotifier
-@onready var guide: Label = $GuideLabel
 @onready var progress: Label = $ProgressLabel
 @onready var judge: Label = $JudgeLabel
 @onready var synth: SamplerInstrument2D = $Sampler2D
@@ -11,70 +10,85 @@ extends Node2D
 @export var responses : Array[String] = [ "D", "D", "D", "D"]
 @export var max_attempts : int = 2
 
+var playerMarkers: Array[NoteMarker]
+
 var pTween: Tween
 var oTween: Tween
-var jTween: Tween
 var tweenBeat: float
 var attempt: int = 0
 var playerTurn: bool = false
+var playerBeat: int = -1
+var otherBeat: int = -1
 var stop := false
 var beatsPlayed: Dictionary = {}
 
 func _ready() -> void:
 	var beatMs := r.beat_length
-	r.beats(1).connect(func(count): # General animation and tracking of attempts
+	playerMarkers = [
+		$ProgressLabel/NoteMarker1,
+		$ProgressLabel/NoteMarker2,
+		$ProgressLabel/NoteMarker3,
+		$ProgressLabel/NoteMarker4
+	]
+	
+	r.beats(1).connect(func(count): 
+		# Tracking every beat -> attempt -> playerBeat vs otherBeat
 		var beat = count % beatsPerAttempt
+		playerTurn = beat >= notes.size()
+		playerBeat = beat - notes.size() if playerTurn else -1
+		otherBeat = beat if not playerTurn else -1
+		if (beat == 0):
+			attempt += 1
+			for n in playerMarkers:
+				n.newAttempt()
 		if stop:
 			#Extraneous beat, ensuring cleanup
 			judge.text = ""
-			guide.text = "The End"
+			progress.text = "The End"
 			return
-		if (beat == 0):
-			attempt += 1
-			if (attempt == max_attempts):
-				# Mark stopped and stop tweening
-				r.running = false
-				stop = true
-				oTween.stop()
-				pTween.stop()
-				jTween.stop()
-				$Player/Sprite2D.scale = Vector2.ONE
-				$Other/Sprite2D.scale = Vector2.ONE
-				await get_tree().create_timer(beatMs / 2).timeout
-				if (r.audio_stream_player): r.audio_stream_player.stop()
-				judge.text = ""
-				guide.text = "The End"
-			else:
-				# Start tweening
-				pTween = get_tree().create_tween().set_loops(4)
-				pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.8 , 0.8), beatMs * 0.75)
-				pTween.tween_property($Player/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
-				oTween = get_tree().create_tween().set_loops(4)
-				oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9 , 0.9), beatMs * 0.75)
-				oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
-		print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
-		if (beat > notes.size()):
-			_judge(beat - 1)
-	)
-	r.beats(1).connect(func(count):
-		var beat = count % beatsPerAttempt
-		playerTurn = beat >= notes.size()
+		
+		# Debug / Progress
 		progress.text = "ATTEMPT %d / %d" % [attempt+1, max_attempts]
+		print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
+		
+		# General animation
+		# Start tweening
+		if (playerBeat == 0):
+			pTween = get_tree().create_tween().set_loops(responses.size()-1)
+			pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.8 , 0.8), beatMs * 0.75)
+			pTween.tween_property($Player/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
+		elif (otherBeat == 0):
+			oTween = get_tree().create_tween().set_loops(notes.size()-1)
+			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9 , 0.9), beatMs * 0.75)
+			oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
+		if (beat == 0 and attempt == max_attempts):
+			# Mark stopped and stop tweening
+			r.running = false
+			stop = true
+			oTween.stop()
+			pTween.stop()
+			$Player/Sprite2D.scale = Vector2.ONE
+			$Other/Sprite2D.scale = Vector2.ONE
+			await get_tree().create_timer(beatMs / 2).timeout
+			$AudioStreamPlayer.stop()
+			judge.text = ""
+			progress.text = "The End"
+			return
+		
+		
+		# Positional Audio and Judging
 		if (not playerTurn):
 			$ListeningListener2D.make_current()
-			judge.text = ""
-			judge.label_settings.font_color = Color.WHITE
-			judge.label_settings.outline_color = Color.WHITE
-			guide.text = "Listen..." if (attempt == 0) else "Listen again..."
+			playerMarkers.all(func(m: NoteMarker): m.newAttempt())
 			synth.play_note(notes[beat], 4)
 		else:
 			$PlayingListener2D.make_current()
-			guide.text = "GO !"
+			_judge(beat)
 	)
-	#r.audio_stream_player.play()
+	$AudioStreamPlayer.play()
 	r.running = true
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var note = null
 	if (Input.is_action_just_pressed("Note1")):
 		note = "D"
@@ -95,21 +109,17 @@ func _process(delta: float) -> void:
 
 func _judge(beat: int):
 	var curBeat = str(attempt, "-", beat)
-	print("Judging %s" % curBeat)
-	var beatMs := r.beat_length
-	jTween = get_tree().create_tween()
-	jTween.tween_property(judge.label_settings, "font_size", 18, beatMs / 4)
-	jTween.tween_property(judge.label_settings, "font_size", 24, beatMs /4)
+	var debugMsg = "Judging %s => player beat %s" % [curBeat, playerBeat]
+	print(debugMsg)
+	await get_tree().create_timer(0.2).timeout
 	var played = beatsPlayed.get(curBeat)
+	var marker = playerMarkers[playerBeat]
 	if not played:
-		judge.text = "MISS"
-		judge.label_settings.font_color = Color.RED
-		judge.label_settings.outline_color = Color.DARK_RED
+		judge.text = "MISS %s" % debugMsg
+		marker.markJudged(0)
 	elif played == responses[beat - notes.size()]:
-		judge.text = "GREAT"
-		judge.label_settings.font_color = Color.GREEN
-		judge.label_settings.outline_color = Color.DARK_GREEN
+		judge.text = "GREAT %s" % debugMsg
+		marker.markJudged(3)
 	else:
-		judge.text = "WRONG"
-		judge.label_settings.font_color = Color.RED
-		judge.label_settings.outline_color = Color.DARK_RED
+		judge.text = "WRONG %s" % debugMsg
+		marker.markJudged(1)

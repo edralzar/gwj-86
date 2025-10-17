@@ -4,14 +4,12 @@
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
 [ext_resource type="AudioStream" uid="uid://dx4y4o0d0y0ss" path="res://assets/bassline.wav" id="3_t0rxu"]
 [ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="4_knagl"]
+[ext_resource type="PackedScene" uid="uid://b4y00kwaq4bt7" path="res://note_marker.tscn" id="4_t0rxu"]
 [ext_resource type="Script" uid="uid://cj6hclpsngu82" path="res://player.gd" id="5_kl852"]
 [ext_resource type="PackedScene" uid="uid://ce3rng3nvdp5i" path="res://other.tscn" id="6_4nmru"]
 [ext_resource type="Script" uid="uid://dtpmtwvvk0ac7" path="res://addons/SimpleSampler/sample_resource.gd" id="8_mjd5i"]
 [ext_resource type="Resource" uid="uid://d085rl7odvhas" path="res://assets/samples/synth/B4.tres" id="9_0qqw6"]
 [ext_resource type="Script" uid="uid://bcwt5giabpceq" path="res://addons/SimpleSampler/sampler_instrument_2D.gd" id="11_2fno3"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_jl8ns"]
-font_size = 28
 
 [sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
 font_size = 32
@@ -20,8 +18,13 @@ font_size = 32
 font_size = 24
 
 [node name="Scene1" type="Node2D"]
+position = Vector2(98, 72)
 script = ExtResource("1_1abo5")
-max_attempts = 10
+max_attempts = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_t0rxu")
+volume_db = -8.901
 
 [node name="RhythmNotifier" type="Node" parent="."]
 script = ExtResource("2_knagl")
@@ -29,20 +32,6 @@ bpm = 140.0
 beat_length = 0.42857142857142855
 running = true
 metadata/_custom_type_script = "uid://dos3qhffr4v0a"
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
-stream = ExtResource("3_t0rxu")
-volume_db = -8.901
-
-[node name="GuideLabel" type="Label" parent="."]
-offset_left = 87.0
-offset_top = 71.0
-offset_right = 478.0
-offset_bottom = 106.0
-text = "Wait..."
-label_settings = SubResource("LabelSettings_jl8ns")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ProgressLabel" type="Label" parent="."]
 offset_left = 92.0
@@ -54,15 +43,38 @@ label_settings = SubResource("LabelSettings_t0rxu")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Line2D" type="Line2D" parent="ProgressLabel"]
+position = Vector2(-92, 1)
+points = PackedVector2Array(38, 106, 917, 106)
+
+[node name="CursorSpawn" type="Marker2D" parent="ProgressLabel"]
+position = Vector2(763, 107)
+
+[node name="CursorDeath" type="Marker2D" parent="ProgressLabel"]
+position = Vector2(48, 108)
+
+[node name="NoteMarker1" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
+position = Vector2(384, 106)
+
+[node name="NoteMarker2" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
+position = Vector2(298, 107)
+
+[node name="NoteMarker3" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
+position = Vector2(210, 106)
+
+[node name="NoteMarker4" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
+position = Vector2(125, 105)
 
 [node name="JudgeLabel" type="Label" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 35.0
-offset_top = 136.0
-offset_right = 246.0
-offset_bottom = 182.0
+offset_left = 405.0
+offset_top = -64.0
+offset_right = 616.0
+offset_bottom = -18.0
 grow_horizontal = 2
 size_flags_horizontal = 6
 text = "GREAT"
@@ -70,6 +82,7 @@ label_settings = SubResource("LabelSettings_2fno3")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Other" parent="." instance=ExtResource("6_4nmru")]
 position = Vector2(739, 360)
