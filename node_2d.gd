@@ -18,8 +18,7 @@ var tweenBeat: float
 var attempt: int = 0
 var playerTurn: bool = false
 var stop := false
-var lastBeatPlayed: String = ""
-var lastNotePlayed: String = ""
+var beatsPlayed: Dictionary = {}
 
 func _ready() -> void:
 	var beatMs := r.beat_length
@@ -54,6 +53,8 @@ func _ready() -> void:
 				oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9 , 0.9), beatMs * 0.75)
 				oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
 		print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
+		if (beat > notes.size()):
+			_judge(beat - 1)
 	)
 	r.beats(1).connect(func(count):
 		var beat = count % beatsPerAttempt
@@ -61,7 +62,9 @@ func _ready() -> void:
 		progress.text = "ATTEMPT %d / %d" % [attempt+1, max_attempts]
 		if (not playerTurn):
 			$ListeningListener2D.make_current()
-			judge.text = "..."
+			judge.text = ""
+			judge.label_settings.font_color = Color.WHITE
+			judge.label_settings.outline_color = Color.WHITE
 			guide.text = "Listen..." if (attempt == 0) else "Listen again..."
 			synth.play_note(notes[beat], 4)
 		else:
@@ -85,25 +88,28 @@ func _process(delta: float) -> void:
 	if (not note):
 		return
 	var beat =  r.current_beat % beatsPerAttempt
-	if (beat < notes.size()):
-		return
 	var curBeat = str(attempt, "-", beat)
-	lastBeatPlayed = curBeat
 	print("Played %s at beat %s" % [note, curBeat])
-	lastNotePlayed = note
+	beatsPlayed[curBeat] = note
 	synth.play_note(note, 3)
-	_judge(beat)
-	#TODO send the note to the judgeddaddadaadad
 
 func _judge(beat: int):
-	if not playerTurn: return
 	var curBeat = str(attempt, "-", beat)
 	print("Judging %s" % curBeat)
-	if (lastBeatPlayed == curBeat and lastNotePlayed == responses[beat - notes.size()]):
-		judge.text = "GREAT"
-	else:
-		judge.text = "WRONG"
 	var beatMs := r.beat_length
 	jTween = get_tree().create_tween()
-	jTween.tween_property(judge.label_settings, "font_size", 18, beatMs / 2)
-	jTween.tween_property(judge.label_settings, "font_size", 24, beatMs /2)
+	jTween.tween_property(judge.label_settings, "font_size", 18, beatMs / 4)
+	jTween.tween_property(judge.label_settings, "font_size", 24, beatMs /4)
+	var played = beatsPlayed.get(curBeat)
+	if not played:
+		judge.text = "MISS"
+		judge.label_settings.font_color = Color.RED
+		judge.label_settings.outline_color = Color.DARK_RED
+	elif played == responses[beat - notes.size()]:
+		judge.text = "GREAT"
+		judge.label_settings.font_color = Color.GREEN
+		judge.label_settings.outline_color = Color.DARK_GREEN
+	else:
+		judge.text = "WRONG"
+		judge.label_settings.font_color = Color.RED
+		judge.label_settings.outline_color = Color.DARK_RED
