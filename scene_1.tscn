@@ -17,7 +17,7 @@ font_size = 32
 [node name="Scene1" type="Node2D"]
 position = Vector2(98, 72)
 script = ExtResource("1_1abo5")
-max_attempts = 3
+max_attempts = 16
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_t0rxu")
@@ -27,39 +27,7 @@ volume_db = -8.901
 script = ExtResource("2_knagl")
 bpm = 140.0
 beat_length = 0.42857142857142855
-running = true
 metadata/_custom_type_script = "uid://dos3qhffr4v0a"
-
-[node name="ProgressLabel" type="Label" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -122.0
-offset_top = -48.0
-offset_right = 269.0
-offset_bottom = 34.0
-grow_horizontal = 2
-text = "ATTEMPT x / y"
-label_settings = SubResource("LabelSettings_t0rxu")
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
-
-[node name="Line2D" type="Line2D" parent="ProgressLabel"]
-position = Vector2(69.5, 0)
-points = PackedVector2Array(38, 106, 917, 106)
-
-[node name="NoteMarker1" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
-position = Vector2(793.5, 104)
-
-[node name="NoteMarker2" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
-position = Vector2(601.5, 104)
-
-[node name="NoteMarker3" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
-position = Vector2(409.5, 104)
-
-[node name="NoteMarker4" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
-position = Vector2(222.5, 106)
 
 [node name="Other" parent="." instance=ExtResource("6_4nmru")]
 position = Vector2(742, 352)
@@ -83,3 +51,67 @@ max_notes = 1
 samples = Array[ExtResource("8_mjd5i")]([ExtResource("9_0qqw6")])
 env_sustain = 0.0
 metadata/_custom_type_script = "uid://bcwt5giabpceq"
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -83.0
+offset_top = -59.0
+offset_right = 1037.0
+offset_bottom = 153.0
+
+[node name="Line2D" type="Line2D" parent="Panel"]
+visible = false
+position = Vector2(112, 15)
+points = PackedVector2Array(38, 106, 917, 106)
+
+[node name="NoteMarker1" parent="Panel/Line2D" instance=ExtResource("4_t0rxu")]
+position = Vector2(724, 104)
+
+[node name="NoteMarker2" parent="Panel/Line2D" instance=ExtResource("4_t0rxu")]
+position = Vector2(532, 104)
+
+[node name="NoteMarker3" parent="Panel/Line2D" instance=ExtResource("4_t0rxu")]
+position = Vector2(340, 104)
+
+[node name="NoteMarker4" parent="Panel/Line2D" instance=ExtResource("4_t0rxu")]
+position = Vector2(153, 106)
+
+[node name="ProgressLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -557.0
+offset_top = 15.0
+offset_right = 559.0
+offset_bottom = 145.0
+grow_horizontal = 2
+text = "Ready ?"
+label_settings = SubResource("LabelSettings_t0rxu")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 159.0
+offset_right = 608.0
+offset_bottom = 200.0
+text = "Start"
+
+[node name="Instructions" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 138.0
+offset_right = 974.0
+offset_bottom = 183.0
+bbcode_enabled = true
+text = "The little round guy will play 4 notes. [b]Quick ![/b] You must figure out the code to such conversations!
+
+You will have 3 attempts to figure out the correct 4 notes in response.... 
+
+Play notes using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad, as preferred 🎶"
+fit_content = true
+autowrap_mode = 0
+shortcut_keys_enabled = false
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Panel/StartButton" to="." method="_start"]

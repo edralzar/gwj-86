@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var r: RhythmNotifier = $RhythmNotifier
-@onready var progress: Label = $ProgressLabel
+@onready var progress: Label = $Panel/ProgressLabel
 @onready var synth: SamplerInstrument2D = $Sampler2D
 @onready var beatsPerAttempt := notes.size() + responses.size()
 
@@ -14,33 +14,102 @@ var playerMarkers: Array[NoteMarker]
 var pTween: Tween
 var oTween: Tween
 var tweenBeat: float
-var attempt: int = 0
-var playerTurn: bool = false
-var playerBeat: int = -1
-var otherBeat: int = -1
-var stop := false
-var beatsPlayed: Dictionary = {}
-var score := 0
+var attempt: int
+var playerTurn: bool
+var playerBeat: int
+var otherBeat: int
+var stop
+var beatsPlayed: Dictionary
+var score
+var beatMs: float
 
 func _ready() -> void:
-	var beatMs := r.beat_length
 	playerMarkers = [
-		$ProgressLabel/NoteMarker1,
-		$ProgressLabel/NoteMarker2,
-		$ProgressLabel/NoteMarker3,
-		$ProgressLabel/NoteMarker4
+		$Panel/Line2D/NoteMarker1,
+		$Panel/Line2D/NoteMarker2,
+		$Panel/Line2D/NoteMarker3,
+		$Panel/Line2D/NoteMarker4
 	]
-	_start()
+	progress.text = ""
 
 func _start():
-	var beatMs = r.beat_length
-	r.beats(1).connect(func(count):
+	beatMs = r.beat_length
+	score = 0
+	attempt = -1
+	playerTurn = false
+	playerBeat = -1
+	otherBeat = -1
+	beatsPlayed = {}
+	stop = false
+	r.beats(1).connect(_beat)
+	$AudioStreamPlayer.play()
+	r.running = true
+	$Panel/Line2D.visible = true
+	$Panel/StartButton.visible = false
+	$Panel/Instructions.visible = false
+
+func _stop():
+	stop = true
+	r.running = false
+	oTween.stop()
+	pTween.stop()
+	$Player/Sprite2D.scale = Vector2.ONE
+	$Other/Sprite2D.scale = Vector2.ONE
+	$AudioStreamPlayer.stop()
+	await get_tree().create_timer(beatMs / 2).timeout
+	
+	for n in playerMarkers:
+		n.newAttempt()
+	$Panel/StartButton.text = "Try Again"
+	$Panel/StartButton.visible = true
+	$Panel/Line2D.visible = false
+
+func _process(_delta: float) -> void:
+	if stop: return
+	var note = null
+	if (Input.is_action_just_pressed("Note1")):
+		note = "D"
+	elif (Input.is_action_just_pressed("Note2")):
+		note = "B"
+	elif (Input.is_action_just_pressed("Note3")):
+		note = "G"
+	elif (Input.is_action_just_pressed("Note4")):
+		note = "E"
+		
+	if (not note):
+		return
+	var beat = r.current_beat % beatsPerAttempt
+	var curBeat = str(attempt, "-", beat)
+	#print("Played %s at beat %s" % [note, curBeat])
+	beatsPlayed[curBeat] = note
+	synth.play_note(note, 3)
+
+func _judge(beat: int):
+	var curBeat = str(attempt, "-", beat)
+	#print("Judging %s => player beat %s" % [curBeat, playerBeat])
+	var marker = playerMarkers[playerBeat]
+	marker.indicateBeat()
+	await get_tree().create_timer(beatMs / 2).timeout
+	var played = beatsPlayed.get(curBeat)
+	if not played:
+		marker.markJudged(0)
+	elif played == responses[beat - notes.size()]:
+		marker.markJudged(3, played)
+		score += 1
+		if (score == notes.size()): 
+			stop = true
+			progress.text = "Congrats! You found the correct response %s in %s attempts" %[responses, attempt+1]
+	else:
+		marker.markJudged(1, played)
+
+func _beat(count: int):
 		# Tracking every beat -> attempt -> playerBeat vs otherBeat
 		var beat = count % beatsPerAttempt
 		playerTurn = beat >= notes.size()
 		playerBeat = beat - notes.size() if playerTurn else -1
 		otherBeat = beat if not playerTurn else -1
-		if (beat == 0 && score < notes.size()):
+		if (beat == 0):
+			print("beat 0 attempt %s" % attempt)
 			attempt += 1
 			score = 0
 		if stop:
@@ -50,7 +119,7 @@ func _start():
 		
 		# Debug / Progress
 		progress.text = "ATTEMPT %d / %d" % [attempt + 1, max_attempts]
-		print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
+		#print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
 		
 		# General animation
 		# Start tweening
@@ -75,56 +144,3 @@ func _start():
 		else:
 			$PlayingListener2D.make_current()
 			_judge(beat)
-	)
-	$AudioStreamPlayer.play()
-	r.running = true
-
-func _stop():
-	stop = true
-	var beatMs = r.beat_length
-	r.running = false
-	oTween.stop()
-	pTween.stop()
-	$Player/Sprite2D.scale = Vector2.ONE
-	$Other/Sprite2D.scale = Vector2.ONE
-	$AudioStreamPlayer.stop()
-	await get_tree().create_timer(beatMs / 2).timeout
-	progress.text = "Congrats!" if score == notes.size() else "=GAME OVER="
-	for n in playerMarkers:
-		n.newAttempt()
-
-func _process(_delta: float) -> void:
-	if stop: return
-	var note = null
-	if (Input.is_action_just_pressed("Note1")):
-		note = "D"
-	elif (Input.is_action_just_pressed("Note2")):
-		note = "B"
-	elif (Input.is_action_just_pressed("Note3")):
-		note = "G"
-	elif (Input.is_action_just_pressed("Note4")):
-		note = "E"
-		
-	if (not note):
-		return
-	var beat = r.current_beat % beatsPerAttempt
-	var curBeat = str(attempt, "-", beat)
-	print("Played %s at beat %s" % [note, curBeat])
-	beatsPlayed[curBeat] = note
-	synth.play_note(note, 3)
-
-func _judge(beat: int):
-	var curBeat = str(attempt, "-", beat)
-	print("Judging %s => player beat %s" % [curBeat, playerBeat])
-	await get_tree().create_timer(0.2).timeout
-	var played = beatsPlayed.get(curBeat)
-	var marker = playerMarkers[playerBeat]
-	marker.indicateBeat()
-	if not played:
-		marker.markJudged(0)
-	elif played == responses[beat - notes.size()]:
-		marker.markJudged(3, played)
-		score += 1
-		if (score == notes.size()): stop = true
-	else:
-		marker.markJudged(1, played)
