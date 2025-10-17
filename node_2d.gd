@@ -43,8 +43,7 @@ func _ready() -> void:
 				n.newAttempt()
 		if stop:
 			#Extraneous beat, ensuring cleanup
-			judge.text = ""
-			progress.text = "The End"
+			_stop()
 			return
 		
 		# Debug / Progress
@@ -62,19 +61,8 @@ func _ready() -> void:
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9, 0.9), beatMs * 0.75)
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
 		if (beat == 0 and attempt == max_attempts):
-			# Mark stopped and stop tweening
-			r.running = false
-			stop = true
-			oTween.stop()
-			pTween.stop()
-			$Player/Sprite2D.scale = Vector2.ONE
-			$Other/Sprite2D.scale = Vector2.ONE
-			await get_tree().create_timer(beatMs / 2).timeout
-			$AudioStreamPlayer.stop()
-			judge.text = ""
-			progress.text = "The End"
+			_stop()
 			return
-		
 		
 		# Positional Audio and Judging
 		if (not playerTurn):
@@ -88,7 +76,23 @@ func _ready() -> void:
 	$AudioStreamPlayer.play()
 	r.running = true
 
+func _stop():
+	stop = true
+	var beatMs = r.beat_length
+	r.running = false
+	oTween.stop()
+	pTween.stop()
+	$Player/Sprite2D.scale = Vector2.ONE
+	$Other/Sprite2D.scale = Vector2.ONE
+	$AudioStreamPlayer.stop()
+	await get_tree().create_timer(beatMs / 2).timeout
+	judge.text = ""
+	progress.text = "=GAME OVER="
+	for n in playerMarkers:
+		n.newAttempt()
+
 func _process(_delta: float) -> void:
+	if stop: return
 	var note = null
 	if (Input.is_action_just_pressed("Note1")):
 		note = "D"
