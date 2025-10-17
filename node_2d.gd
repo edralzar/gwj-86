@@ -41,8 +41,6 @@ func _ready() -> void:
 		if (beat == 0 && score < notes.size()):
 			attempt += 1
 			score = 0
-			for n in playerMarkers:
-				n.newAttempt()
 		if stop:
 			#Extraneous beat, ensuring cleanup
 			_stop()
@@ -69,8 +67,9 @@ func _ready() -> void:
 		# Positional Audio and Judging
 		if (not playerTurn):
 			$ListeningListener2D.make_current()
-			playerMarkers.all(func(m: NoteMarker): m.newAttempt())
 			synth.play_note(notes[beat], 4)
+			if (playerMarkers[otherBeat]):
+				playerMarkers[otherBeat].newAttempt()
 		else:
 			$PlayingListener2D.make_current()
 			_judge(beat)
