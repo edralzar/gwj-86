@@ -2,7 +2,6 @@ extends Node2D
 
 @onready var r: RhythmNotifier = $RhythmNotifier
 @onready var progress: Label = $ProgressLabel
-@onready var judge: Label = $JudgeLabel
 @onready var synth: SamplerInstrument2D = $Sampler2D
 @onready var beatsPerAttempt := notes.size() + responses.size()
 
@@ -90,7 +89,6 @@ func _stop():
 	$Other/Sprite2D.scale = Vector2.ONE
 	$AudioStreamPlayer.stop()
 	await get_tree().create_timer(beatMs / 2).timeout
-	judge.text = ""
 	progress.text = "Congrats!" if score == notes.size() else "=GAME OVER="
 	for n in playerMarkers:
 		n.newAttempt()
@@ -117,20 +115,16 @@ func _process(_delta: float) -> void:
 
 func _judge(beat: int):
 	var curBeat = str(attempt, "-", beat)
-	var debugMsg = "Judging %s => player beat %s" % [curBeat, playerBeat]
-	print(debugMsg)
+	print("Judging %s => player beat %s" % [curBeat, playerBeat])
 	await get_tree().create_timer(0.2).timeout
 	var played = beatsPlayed.get(curBeat)
 	var marker = playerMarkers[playerBeat]
 	marker.indicateBeat()
 	if not played:
-		judge.text = "MISS %s" % debugMsg
 		marker.markJudged(0)
 	elif played == responses[beat - notes.size()]:
-		judge.text = "GREAT %s" % debugMsg
 		marker.markJudged(3, played)
 		score += 1
 		if (score == notes.size()): stop = true
 	else:
-		judge.text = "WRONG %s" % debugMsg
 		marker.markJudged(1, played)

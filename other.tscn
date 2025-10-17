@@ -2,16 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://dhseu661c062m" path="res://assets/other.png" id="1_4clav"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_esrft"]
-radius = 155.70805
+[sub_resource type="CircleShape2D" id="CircleShape2D_4clav"]
+radius = 137.05838
 
 [node name="Other" type="StaticBody2D"]
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_esrft")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(31, 51)
 texture = ExtResource("1_4clav")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4clav")

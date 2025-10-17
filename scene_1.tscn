@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=12 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
@@ -13,9 +13,6 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
 font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_2fno3"]
-font_size = 24
 
 [node name="Scene1" type="Node2D"]
 position = Vector2(98, 72)
@@ -52,12 +49,6 @@ uppercase = true
 position = Vector2(69.5, 0)
 points = PackedVector2Array(38, 106, 917, 106)
 
-[node name="CursorSpawn" type="Marker2D" parent="ProgressLabel"]
-position = Vector2(763, 107)
-
-[node name="CursorDeath" type="Marker2D" parent="ProgressLabel"]
-position = Vector2(48, 108)
-
 [node name="NoteMarker1" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
 position = Vector2(793.5, 104)
 
@@ -69,23 +60,6 @@ position = Vector2(409.5, 104)
 
 [node name="NoteMarker4" parent="ProgressLabel" instance=ExtResource("4_t0rxu")]
 position = Vector2(222.5, 106)
-
-[node name="JudgeLabel" type="Label" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 405.0
-offset_top = -64.0
-offset_right = 616.0
-offset_bottom = -18.0
-grow_horizontal = 2
-size_flags_horizontal = 6
-text = "GREAT"
-label_settings = SubResource("LabelSettings_2fno3")
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
-metadata/_edit_use_anchors_ = true
 
 [node name="Other" parent="." instance=ExtResource("6_4nmru")]
 position = Vector2(742, 352)
