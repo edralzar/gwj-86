@@ -6,9 +6,9 @@ extends Node2D
 @onready var synth: SamplerInstrument2D = $Sampler2D
 @onready var beatsPerAttempt := notes.size() + responses.size()
 
-@export var notes : Array[String] = ["D", "E", "G", "B"]
-@export var responses : Array[String] = [ "D", "D", "D", "D"]
-@export var max_attempts : int = 2
+@export var notes: Array[String] = ["D", "E", "G", "B"]
+@export var responses: Array[String] = ["D", "D", "D", "D"]
+@export var max_attempts: int = 2
 
 var playerMarkers: Array[NoteMarker]
 
@@ -31,7 +31,7 @@ func _ready() -> void:
 		$ProgressLabel/NoteMarker4
 	]
 	
-	r.beats(1).connect(func(count): 
+	r.beats(1).connect(func(count):
 		# Tracking every beat -> attempt -> playerBeat vs otherBeat
 		var beat = count % beatsPerAttempt
 		playerTurn = beat >= notes.size()
@@ -48,18 +48,18 @@ func _ready() -> void:
 			return
 		
 		# Debug / Progress
-		progress.text = "ATTEMPT %d / %d" % [attempt+1, max_attempts]
+		progress.text = "ATTEMPT %d / %d" % [attempt + 1, max_attempts]
 		print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
 		
 		# General animation
 		# Start tweening
 		if (playerBeat == 0):
-			pTween = get_tree().create_tween().set_loops(responses.size()-1)
-			pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.8 , 0.8), beatMs * 0.75)
+			pTween = get_tree().create_tween().set_loops(responses.size() - 1)
+			pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.8, 0.8), beatMs * 0.75)
 			pTween.tween_property($Player/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
 		elif (otherBeat == 0):
-			oTween = get_tree().create_tween().set_loops(notes.size()-1)
-			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9 , 0.9), beatMs * 0.75)
+			oTween = get_tree().create_tween().set_loops(notes.size() - 1)
+			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9, 0.9), beatMs * 0.75)
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
 		if (beat == 0 and attempt == max_attempts):
 			# Mark stopped and stop tweening
@@ -101,7 +101,7 @@ func _process(_delta: float) -> void:
 		
 	if (not note):
 		return
-	var beat =  r.current_beat % beatsPerAttempt
+	var beat = r.current_beat % beatsPerAttempt
 	var curBeat = str(attempt, "-", beat)
 	print("Played %s at beat %s" % [note, curBeat])
 	beatsPlayed[curBeat] = note

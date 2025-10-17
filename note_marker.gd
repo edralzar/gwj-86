@@ -40,7 +40,7 @@ func markJudged(score: int):
 		$Polygon2D.color = Color.GREEN
 	tween = get_tree().create_tween()
 	tween.set_loops(4)
-	tween.tween_property(settings, "font_size", base_font_size + 10, beatSeconds / 4 )
+	tween.tween_property(settings, "font_size", base_font_size + 10, beatSeconds / 4)
 	tween.tween_property(settings, "font_size", base_font_size, beatSeconds / 2)
 	
 func _reset():
