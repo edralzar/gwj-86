@@ -119,6 +119,7 @@ func _judge(beat: int):
 	await get_tree().create_timer(0.2).timeout
 	var played = beatsPlayed.get(curBeat)
 	var marker = playerMarkers[playerBeat]
+	marker.indicateBeat()
 	if not played:
 		judge.text = "MISS %s" % debugMsg
 		marker.markJudged(0)

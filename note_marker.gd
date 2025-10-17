@@ -17,10 +17,13 @@ func _ready() -> void:
 	$JudgeLabel.text = ""
 	$JudgeLabel.label_settings = settings
 	$NoteLabel.text = ""
+	$Line2D.visible = false
 
 func newAttempt():
 	_reset()
 
+func indicateBeat():
+	$Line2D.visible = true
 
 func markJudged(score: int, note: String = ""):
 	score = score % 4
@@ -42,6 +45,7 @@ func markJudged(score: int, note: String = ""):
 		$JudgeLabel.text = "GREAT"
 		settings.font_color = Color.GREEN
 		$Polygon2D.color = Color.GREEN
+	$Line2D.visible = false
 	tween = get_tree().create_tween()
 	tween.set_loops(4)
 	tween.tween_property(settings, "font_size", base_font_size + 10, beatSeconds / 4)
@@ -55,3 +59,4 @@ func _reset():
 	settings.font_size = base_font_size
 	$JudgeLabel.visible = true
 	if (tween): tween.stop()
+	$Line2D.visible = false
