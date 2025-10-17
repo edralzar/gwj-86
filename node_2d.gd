@@ -31,7 +31,10 @@ func _ready() -> void:
 		$ProgressLabel/NoteMarker3,
 		$ProgressLabel/NoteMarker4
 	]
-	
+	_start()
+
+func _start():
+	var beatMs = r.beat_length
 	r.beats(1).connect(func(count):
 		# Tracking every beat -> attempt -> playerBeat vs otherBeat
 		var beat = count % beatsPerAttempt
