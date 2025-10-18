@@ -11,7 +11,9 @@ var settings: LabelSettings
 func _ready() -> void:
 	if not isPlayerNote:
 		$Polygon2D.visible = false
+	var font = $JudgeLabel.label_settings.font
 	settings = LabelSettings.new()
+	settings.font = font
 	settings.font_color = Color.WHITE
 	settings.font_size = base_font_size
 	$JudgeLabel.text = ""

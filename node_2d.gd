@@ -9,6 +9,7 @@ extends Node2D
 @export var notes: Array[String] = ["D", "E", "G", "B"]
 @export var responses: Array[String] = ["D", "D", "D", "D"]
 @export var max_attempts: int = 2
+@export var gracePeriod: float = 0.2
 
 var playerMarkers: Array[NoteMarker]
 
@@ -93,8 +94,10 @@ func _judge(beat: int):
 	#print("Judging %s => player beat %s" % [curBeat, playerBeat])
 	var marker = playerMarkers[playerBeat]
 	marker.indicateBeat()
-	await get_tree().create_timer(beatMs / 2).timeout
 	var played = beatsPlayed.get(curBeat)
+	if not played:
+		await get_tree().create_timer(gracePeriod).timeout
+		played = beatsPlayed.get(curBeat)
 	if not played:
 		marker.markJudged(0)
 	elif played == responses[beat - notes.size()]:

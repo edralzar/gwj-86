@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=16 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
@@ -9,10 +9,14 @@
 [ext_resource type="PackedScene" uid="uid://ce3rng3nvdp5i" path="res://other.tscn" id="6_4nmru"]
 [ext_resource type="Script" uid="uid://dtpmtwvvk0ac7" path="res://addons/SimpleSampler/sample_resource.gd" id="8_mjd5i"]
 [ext_resource type="Resource" uid="uid://d085rl7odvhas" path="res://assets/samples/synth/B4.tres" id="9_0qqw6"]
+[ext_resource type="FontFile" uid="uid://brbf0em57jfuu" path="res://assets/fonts/Lato,Oswald,Sedgwick_Ave_Display/Oswald/static/Oswald-Bold.ttf" id="11_0qqw6"]
 [ext_resource type="Script" uid="uid://bcwt5giabpceq" path="res://addons/SimpleSampler/sampler_instrument_2D.gd" id="11_2fno3"]
+[ext_resource type="Theme" uid="uid://bywr0bjm42wjw" path="res://assets/gwj-theme.tres" id="11_jl8ns"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
+font = ExtResource("11_0qqw6")
 font_size = 32
+font_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 
 [sub_resource type="InputEventAction" id="InputEventAction_t0rxu"]
 action = &"ui_accept"
@@ -24,6 +28,13 @@ events = [SubResource("InputEventAction_t0rxu")]
 position = Vector2(98, 72)
 script = ExtResource("1_1abo5")
 max_attempts = 16
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -99.0
+offset_top = -71.0
+offset_right = 1052.0
+offset_bottom = 578.0
+color = Color(0.15294118, 0.20392157, 0.30588236, 1)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_t0rxu")
@@ -58,11 +69,12 @@ samples = Array[ExtResource("8_mjd5i")]([ExtResource("9_0qqw6")])
 env_sustain = 0.0
 metadata/_custom_type_script = "uid://bcwt5giabpceq"
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="ColorRect" parent="."]
 offset_left = -83.0
 offset_top = -59.0
 offset_right = 1037.0
 offset_bottom = 153.0
+color = Color(0.078431375, 0.13333334, 0.2509804, 1)
 
 [node name="Line2D" type="Line2D" parent="Panel"]
 visible = false
@@ -98,26 +110,31 @@ autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 494.0
+offset_left = 21.0
 offset_top = 159.0
-offset_right = 608.0
-offset_bottom = 200.0
+offset_right = 1106.0
+offset_bottom = 199.33453
+theme = ExtResource("11_jl8ns")
+theme_override_colors/font_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 shortcut = SubResource("Shortcut_2fno3")
 text = "Press Enter to Start"
 
 [node name="Instructions" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
-offset_left = 138.0
-offset_right = 974.0
+offset_left = 3.0
+offset_right = 1121.0
 offset_bottom = 183.0
+theme = ExtResource("11_jl8ns")
+theme_override_colors/default_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 25
 bbcode_enabled = true
 text = "The little round guy will play {CHALLENGE} notes. [b]Quick ![/b] You must figure out the code to such conversations!
 
 You will have {ATTEMPTS} attempts to figure out the correct {RESPONSES} notes in response...
 
 Play notes in time, using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad buttons as preferred 🎶"
-fit_content = true
-autowrap_mode = 0
+autowrap_mode = 2
 shortcut_keys_enabled = false
 horizontal_alignment = 1
 

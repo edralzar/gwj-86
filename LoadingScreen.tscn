@@ -1,17 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://fjtxoir7ihkg"]
+[gd_scene load_steps=10 format=3 uid="uid://fjtxoir7ihkg"]
 
 [ext_resource type="Script" uid="uid://cw6avvoxpumgb" path="res://loading_screen.gd" id="1_dhqi2"]
 [ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="1_ghsbh"]
+[ext_resource type="FontFile" uid="uid://c30egysah3avr" path="res://assets/fonts/Lato,Oswald,Sedgwick_Ave_Display/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf" id="2_dqku6"]
 [ext_resource type="Texture2D" uid="uid://dcd1tg3645t7g" path="res://assets/86-Masks-768x219.png" id="3_2ij24"]
-
-[sub_resource type="FontVariation" id="FontVariation_dhqi2"]
-variation_embolden = 0.67
+[ext_resource type="Theme" uid="uid://bywr0bjm42wjw" path="res://assets/gwj-theme.tres" id="5_lcrdd"]
+[ext_resource type="Texture2D" uid="uid://r0p8xfywo3n" path="res://assets/GWJ-Half-Logo-Orange.svg" id="6_lcrdd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2ij24"]
-font = SubResource("FontVariation_dhqi2")
+font = ExtResource("2_dqku6")
 font_size = 72
+font_color = Color(0.9411765, 0.9411765, 0.9411765, 1)
 outline_size = 10
-outline_color = Color(0, 0, 0, 1)
+outline_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 
 [sub_resource type="InputEventAction" id="InputEventAction_2ij24"]
 action = &"ui_accept"
@@ -19,37 +20,55 @@ action = &"ui_accept"
 [sub_resource type="Shortcut" id="Shortcut_acls4"]
 events = [SubResource("InputEventAction_2ij24")]
 
-[node name="Node2D" type="Node2D"]
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_dhqi2")
 
-[node name="Label" type="Label" parent="."]
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
 offset_right = 1153.0
-offset_bottom = 1017.0
+offset_bottom = 646.0
+color = Color(0.15294118, 0.20392157, 0.30588236, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 24.0
+offset_right = 1153.0
+offset_bottom = 1041.0
 text = "A tiny rythm game about autism, masking and decoding conversations..."
 label_settings = SubResource("LabelSettings_2ij24")
 horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="86Masks768x219" type="Sprite2D" parent="."]
-position = Vector2(586, 454)
+position = Vector2(711.00006, 355)
 scale = Vector2(1.0542239, 1.0542239)
 texture = ExtResource("3_2ij24")
 
 [node name="Player" parent="." instance=ExtResource("1_ghsbh")]
-position = Vector2(968.00006, 259)
+position = Vector2(162, 550)
 scale = Vector2(0.4488942, 0.4488942)
 
 [node name="Button" type="Button" parent="."]
+layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 180.0
-offset_top = 582.0
-offset_right = 990.0
-offset_bottom = 646.0
+offset_left = 306.0
+offset_top = 514.0
+offset_right = 1116.0
+offset_bottom = 578.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("5_lcrdd")
+theme_override_colors/font_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 shortcut = SubResource("Shortcut_acls4")
 text = "Press ENTER to see Instructions and Play"
+
+[node name="GwjHalfLogoOrange" type="Sprite2D" parent="."]
+position = Vector2(167.5, 357.5)
+scale = Vector2(1.7890625, 1.7890625)
+texture = ExtResource("6_lcrdd")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

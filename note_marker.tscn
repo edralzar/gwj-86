@@ -1,8 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4y00kwaq4bt7"]
+[gd_scene load_steps=6 format=3 uid="uid://b4y00kwaq4bt7"]
 
 [ext_resource type="Script" uid="uid://bk8bqikh05gs3" path="res://note_marker.gd" id="1_bk2y7"]
+[ext_resource type="FontFile" uid="uid://c30egysah3avr" path="res://assets/fonts/Lato,Oswald,Sedgwick_Ave_Display/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf" id="2_mnjw0"]
+[ext_resource type="FontFile" uid="uid://brbf0em57jfuu" path="res://assets/fonts/Lato,Oswald,Sedgwick_Ave_Display/Oswald/static/Oswald-Bold.ttf" id="3_b2gr2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qw0tt"]
+font = ExtResource("2_mnjw0")
 
 [sub_resource type="LabelSettings" id="LabelSettings_bk2y7"]
+font = ExtResource("3_b2gr2")
 font_color = Color(0, 0, 0, 1)
 
 [node name="NoteMarker" type="Node2D"]
@@ -13,10 +19,11 @@ polygon = PackedVector2Array(0, -24, -24, 0, 0, 24, 24, 0)
 
 [node name="JudgeLabel" type="Label" parent="."]
 offset_left = -80.0
-offset_top = 32.0
+offset_top = 40.0
 offset_right = 80.0
-offset_bottom = 66.0
+offset_bottom = 74.0
 text = "Great"
+label_settings = SubResource("LabelSettings_qw0tt")
 horizontal_alignment = 1
 vertical_alignment = 1
 
