@@ -9,7 +9,7 @@ extends Node2D
 @export var notes: Array[String] = ["D", "E", "G", "B"]
 @export var responses: Array[String] = ["D", "G", "D", "G"]
 @export var max_attempts: int = 12
-@export var gracePeriod: float = 0.2
+@export var gracePeriod: float = 0.3
 
 var playerMarkers: Array[NoteMarker]
 
