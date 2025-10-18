@@ -58,8 +58,8 @@ func _start():
 func _stop():
 	stop = true
 	r.running = false
-	oTween.stop()
-	pTween.stop()
+	if oTween: oTween.stop()
+	if pTween: pTween.stop()
 	$Player/Sprite2D.scale = Vector2.ONE
 	$Other/Sprite2D.scale = Vector2.ONE
 	$AudioStreamPlayer.stop()
@@ -76,6 +76,8 @@ func _stop():
 		progress.text = "=GAME OVER="
 
 func _process(_delta: float) -> void:
+	if (Input.is_action_just_pressed("ui_cancel")):
+		_stop()
 	if stop: return
 	var note = null
 	if (Input.is_action_just_pressed("Note1")):
