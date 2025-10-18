@@ -78,7 +78,10 @@ func _stop():
 func _process(_delta: float) -> void:
 	if (Input.is_action_just_pressed("ui_cancel")):
 		_stop()
-	if stop: return
+	var beat = r.current_beat % beatsPerAttempt
+	# Don't play note if not player's turn (or close to player's turn)
+	if (stop or beat < notes.size()-1):
+		return
 	var note = null
 	if (Input.is_action_just_pressed("Note1")):
 		note = "D"
@@ -91,7 +94,7 @@ func _process(_delta: float) -> void:
 		
 	if (not note):
 		return
-	var beat = r.current_beat % beatsPerAttempt
+	
 	var curBeat = str(attempt, "-", beat)
 	#print("Played %s at beat %s" % [note, curBeat])
 	beatsPlayed[curBeat] = note
