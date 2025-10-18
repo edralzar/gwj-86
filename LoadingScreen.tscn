@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://fjtxoir7ihkg"]
+[gd_scene load_steps=8 format=3 uid="uid://fjtxoir7ihkg"]
 
 [ext_resource type="Script" uid="uid://cw6avvoxpumgb" path="res://loading_screen.gd" id="1_dhqi2"]
 [ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="1_ghsbh"]
+[ext_resource type="Texture2D" uid="uid://dcd1tg3645t7g" path="res://assets/86-Masks-768x219.png" id="3_2ij24"]
 
 [sub_resource type="FontVariation" id="FontVariation_dhqi2"]
 variation_embolden = 0.67
@@ -12,27 +13,43 @@ font_size = 72
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="InputEventAction" id="InputEventAction_2ij24"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_acls4"]
+events = [SubResource("InputEventAction_2ij24")]
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_dhqi2")
 
 [node name="Label" type="Label" parent="."]
-offset_left = 8.0
-offset_top = 14.0
-offset_right = 1150.0
-offset_bottom = 419.0
+offset_right = 1153.0
+offset_bottom = 1017.0
 text = "A tiny rythm game about autism, masking and decoding conversations..."
 label_settings = SubResource("LabelSettings_2ij24")
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="86Masks768x219" type="Sprite2D" parent="."]
+position = Vector2(586, 454)
+scale = Vector2(1.0542239, 1.0542239)
+texture = ExtResource("3_2ij24")
+
 [node name="Player" parent="." instance=ExtResource("1_ghsbh")]
-position = Vector2(419, 480)
+position = Vector2(968.00006, 259)
+scale = Vector2(0.4488942, 0.4488942)
 
 [node name="Button" type="Button" parent="."]
-offset_left = 639.0
-offset_top = 401.0
-offset_right = 839.0
-offset_bottom = 507.0
-text = "PLAY"
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 180.0
+offset_top = 582.0
+offset_right = 990.0
+offset_bottom = 646.0
+grow_horizontal = 2
+grow_vertical = 0
+shortcut = SubResource("Shortcut_acls4")
+text = "Press ENTER to see Instructions and Play"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

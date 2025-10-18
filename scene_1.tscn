@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=14 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
@@ -13,6 +13,12 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_t0rxu"]
 font_size = 32
+
+[sub_resource type="InputEventAction" id="InputEventAction_t0rxu"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_2fno3"]
+events = [SubResource("InputEventAction_t0rxu")]
 
 [node name="Scene1" type="Node2D"]
 position = Vector2(98, 72)
@@ -96,7 +102,8 @@ offset_left = 494.0
 offset_top = 159.0
 offset_right = 608.0
 offset_bottom = 200.0
-text = "Start"
+shortcut = SubResource("Shortcut_2fno3")
+text = "Press Enter to Start"
 
 [node name="Instructions" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
@@ -108,7 +115,7 @@ text = "The little round guy will play {CHALLENGE} notes. [b]Quick ![/b] You mus
 
 You will have {ATTEMPTS} attempts to figure out the correct {RESPONSES} notes in response...
 
-Play notes using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad, as preferred 🎶"
+Play notes in time, using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad buttons as preferred 🎶"
 fit_content = true
 autowrap_mode = 0
 shortcut_keys_enabled = false
