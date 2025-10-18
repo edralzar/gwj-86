@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://fjtxoir7ihkg"]
+[gd_scene load_steps=11 format=3 uid="uid://fjtxoir7ihkg"]
 
 [ext_resource type="Script" uid="uid://cw6avvoxpumgb" path="res://loading_screen.gd" id="1_dhqi2"]
 [ext_resource type="PackedScene" uid="uid://dsed6rjvxprh6" path="res://Player.tscn" id="1_ghsbh"]
@@ -17,8 +17,11 @@ outline_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 [sub_resource type="InputEventAction" id="InputEventAction_2ij24"]
 action = &"ui_accept"
 
+[sub_resource type="InputEventAction" id="InputEventAction_lcrdd"]
+action = &"ui_select"
+
 [sub_resource type="Shortcut" id="Shortcut_acls4"]
-events = [SubResource("InputEventAction_2ij24")]
+events = [SubResource("InputEventAction_2ij24"), SubResource("InputEventAction_lcrdd")]
 
 [node name="LoadingScreen" type="Control"]
 layout_mode = 3

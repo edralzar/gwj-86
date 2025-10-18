@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cth76k06xt8wj"]
+[gd_scene load_steps=17 format=3 uid="uid://cth76k06xt8wj"]
 
 [ext_resource type="Script" uid="uid://bgaody07dvkv8" path="res://node_2d.gd" id="1_1abo5"]
 [ext_resource type="Script" uid="uid://dos3qhffr4v0a" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="2_knagl"]
@@ -21,8 +21,11 @@ font_color = Color(0.98039216, 0.38039216, 0.28627452, 1)
 [sub_resource type="InputEventAction" id="InputEventAction_t0rxu"]
 action = &"ui_accept"
 
+[sub_resource type="InputEventAction" id="InputEventAction_jl8ns"]
+action = &"ui_select"
+
 [sub_resource type="Shortcut" id="Shortcut_2fno3"]
-events = [SubResource("InputEventAction_t0rxu")]
+events = [SubResource("InputEventAction_t0rxu"), SubResource("InputEventAction_jl8ns")]
 
 [node name="Scene1" type="Node2D"]
 position = Vector2(98, 72)
