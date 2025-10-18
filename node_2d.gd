@@ -7,8 +7,8 @@ extends Node2D
 @onready var beatsPerAttempt := notes.size() + responses.size()
 
 @export var notes: Array[String] = ["D", "E", "G", "B"]
-@export var responses: Array[String] = ["D", "D", "D", "D"]
-@export var max_attempts: int = 2
+@export var responses: Array[String] = ["D", "G", "D", "G"]
+@export var max_attempts: int = 12
 @export var gracePeriod: float = 0.2
 
 var playerMarkers: Array[NoteMarker]

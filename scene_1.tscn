@@ -30,7 +30,6 @@ events = [SubResource("InputEventAction_t0rxu"), SubResource("InputEventAction_j
 [node name="Scene1" type="Node2D"]
 position = Vector2(98, 72)
 script = ExtResource("1_1abo5")
-max_attempts = 16
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -99.0
