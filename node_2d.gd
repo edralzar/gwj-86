@@ -98,6 +98,7 @@ func _process(_delta: float) -> void:
 	var curBeat = str(attempt, "-", beat)
 	#print("Played %s at beat %s" % [note, curBeat])
 	beatsPlayed[curBeat] = note
+	$PlayingListener2D.make_current()
 	synth.play_note(note, 3)
 
 func _judge(beat: int):
@@ -160,5 +161,4 @@ func _beat(count: int):
 			if (playerMarkers[otherBeat]):
 				playerMarkers[otherBeat].newAttempt()
 		else:
-			$PlayingListener2D.make_current()
 			_judge(beat)
