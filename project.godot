@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 NoteValue="*res://addons/SimpleSampler/note_value.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/SimpleSampler/plugin.cfg")
