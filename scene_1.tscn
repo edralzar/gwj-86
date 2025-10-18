@@ -135,7 +135,7 @@ text = "The little round guy will play {CHALLENGE} notes. [b]Quick ![/b] You mus
 
 You will have {ATTEMPTS} attempts to figure out the correct {RESPONSES} notes in response...
 
-Play notes in time, using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad buttons as preferred 🎶"
+Play notes in time, using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad buttons as preferred..."
 autowrap_mode = 2
 shortcut_keys_enabled = false
 horizontal_alignment = 1
