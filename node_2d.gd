@@ -24,6 +24,7 @@ var stop
 var beatsPlayed: Dictionary
 var score
 var beatMs: float
+var win: int
 
 func _ready() -> void:
 	playerMarkers = [
@@ -40,6 +41,7 @@ func _ready() -> void:
 func _start():
 	beatMs = r.beat_length
 	score = 0
+	win = -1
 	attempt = -1
 	playerTurn = false
 	playerBeat = -1
@@ -68,6 +70,10 @@ func _stop():
 	$Panel/StartButton.text = "Try Again"
 	$Panel/StartButton.visible = true
 	$Panel/Line2D.visible = false
+	if (win > 0):
+		progress.text = "Congrats! You found the correct response %s in %s attempts" %[responses, win]
+	else:
+		progress.text = "=GAME OVER="
 
 func _process(_delta: float) -> void:
 	if stop: return
@@ -105,7 +111,7 @@ func _judge(beat: int):
 		score += 1
 		if (score == notes.size()): 
 			stop = true
-			progress.text = "Congrats! You found the correct response %s in %s attempts" %[responses, attempt+1]
+			win = attempt+1
 	else:
 		marker.markJudged(1, played)
 
@@ -125,7 +131,7 @@ func _beat(count: int):
 			return
 		
 		# Debug / Progress
-		progress.text = "ATTEMPT %d / %d" % [attempt + 1, max_attempts]
+		if (attempt < max_attempts): progress.text = "ATTEMPT %d / %d" % [attempt + 1, max_attempts]
 		#print("beat %s in attempt %s [total beats %s]" % [beat, attempt, count])
 		
 		# General animation
