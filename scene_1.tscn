@@ -104,9 +104,9 @@ offset_left = 138.0
 offset_right = 974.0
 offset_bottom = 183.0
 bbcode_enabled = true
-text = "The little round guy will play 4 notes. [b]Quick ![/b] You must figure out the code to such conversations!
+text = "The little round guy will play {CHALLENGE} notes. [b]Quick ![/b] You must figure out the code to such conversations!
 
-You will have 3 attempts to figure out the correct 4 notes in response.... 
+You will have {ATTEMPTS} attempts to figure out the correct {RESPONSES} notes in response...
 
 Play notes using the keyboard (arrow keys or [b][code]W A S D[/code][/b]) or the gamepad, as preferred 🎶"
 fit_content = true

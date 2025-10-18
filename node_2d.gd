@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var r: RhythmNotifier = $RhythmNotifier
+@onready var instructions: RichTextLabel = $Panel/Instructions
 @onready var progress: Label = $Panel/ProgressLabel
 @onready var synth: SamplerInstrument2D = $Sampler2D
 @onready var beatsPerAttempt := notes.size() + responses.size()
@@ -31,6 +32,9 @@ func _ready() -> void:
 		$Panel/Line2D/NoteMarker4
 	]
 	progress.text = ""
+	instructions.text = instructions.text.replace("{ATTEMPTS}", str(max_attempts))
+	instructions.text = instructions.text.replace("{CHALLENGE}", str(notes.size()))
+	instructions.text = instructions.text.replace("{RESPONSES}", str(responses.size()))
 
 func _start():
 	beatMs = r.beat_length
