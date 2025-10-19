@@ -53,6 +53,7 @@ position = Vector2(742, 352)
 
 [node name="Player" parent="." instance=ExtResource("4_knagl")]
 position = Vector2(294, 344)
+scale = Vector2(0.9, 0.9)
 script = ExtResource("5_kl852")
 
 [node name="PlayingListener2D" type="AudioListener2D" parent="."]

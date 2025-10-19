@@ -143,9 +143,9 @@ func _beat(count: int):
 		# General animation
 		# Start tweening
 		if (playerBeat == 0):
-			pTween = get_tree().create_tween().set_loops(responses.size() - 1)
-			pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.8, 0.8), beatMs * 0.75)
+			pTween = get_tree().create_tween().set_loops(responses.size())
 			pTween.tween_property($Player/Sprite2D, "scale", Vector2(1.0, 1.0), beatMs * 0.25)
+			pTween.tween_property($Player/Sprite2D, "scale", Vector2(0.9, 0.9), beatMs * 0.75)
 		elif (otherBeat == 0):
 			oTween = get_tree().create_tween().set_loops(notes.size() - 1)
 			oTween.tween_property($Other/Sprite2D, "scale", Vector2(0.9, 0.9), beatMs * 0.75)
